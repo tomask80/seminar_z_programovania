@@ -6,13 +6,13 @@ typedef struct
 {
     int pocet_prvkov;
     int pole[10];    
-}MNOZINA;
+} MNOZINA;
 
 typedef struct 
 {
     int pocet_prvkov;
     int pole[20];    
-}VYSTUPNA;
+} VYSTUPNA;
 
 void zjednotenie(MNOZINA *A, MNOZINA *B, VYSTUPNA *C)
 {
@@ -48,7 +48,6 @@ void prienik(MNOZINA *A, MNOZINA *B, VYSTUPNA *C)
         }
        
     }
-
 }
 
 void vypis(VYSTUPNA *C)
@@ -70,6 +69,4 @@ int main()
     vypis(&C);
     prienik(&A,&B,&C);
     vypis(&C);
-
-
 }
