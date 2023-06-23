@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdarg.h>
-#include <stdbool.h> 
+#include <stdbool.h>
 
 typedef struct
 {
@@ -46,26 +46,32 @@ void prienik(MNOZINA *A, MNOZINA *B, VYSTUPNA *C)
         {
             C->pole[C->pocet_prvkov] = B->pole[j]; // tu bola chyba B[i]  ale i plati len pre A
             C->pocet_prvkov++;
-            // posun cez A 
+            // posun cez A
             int a = A->pole[i];
-            while (i+1 < A->pocet_prvkov && (hasNext = true) && A->pole[++i] == a);
+            while (i + 1 < A->pocet_prvkov && (hasNext = true) && A->pole[++i] == a)
+                ;
             // posun cez B
-            while (j+1 < B->pocet_prvkov && (hasNext = true) && B->pole[++j] == a);
+            while (j + 1 < B->pocet_prvkov && (hasNext = true) && B->pole[++j] == a)
+                ;
             continue;
         }
         else
         {
-            if(A->pole[i] < B->pole[j]) {
-                // posun cez A 
+            if (A->pole[i] < B->pole[j])
+            {
+                // posun cez A
                 int a = A->pole[i];
-                while (i+1 < A->pocet_prvkov && (hasNext = true) &&A->pole[++i] == a);
-            } else {
+                while (i + 1 < A->pocet_prvkov && (hasNext = true) && A->pole[++i] == a)
+                    ;
+            }
+            else
+            {
                 // posun cez B
-                int b = B->pole[j];                
-                while (j+1 < B->pocet_prvkov && (hasNext = true) && B->pole[++j] == b);
+                int b = B->pole[j];
+                while (j + 1 < B->pocet_prvkov && (hasNext = true) && B->pole[++j] == b)
+                    ;
             }
         }
-
     }
     // upraceme
     C->pole = realloc(C->pole, C->pocet_prvkov * sizeof(int));
@@ -109,16 +115,29 @@ void vystupnaDestroy(VYSTUPNA *mnozina)
     mnozina->pole = NULL;
 }
 
-void pridaj(MNOZINA *mnozina)
+void pridaj(MNOZINA *mnozina, int prvok)
 {
-    realloc()
+    mnozina->pole = realloc(mnozina->pole, (mnozina->pocet_prvkov + 1) * sizeof(int));
+    mnozina->pole[mnozina->pocet_prvkov] = prvok;
+    mnozina->pocet_prvkov++;
 }
 
-void odstran(MNOZINA *mnozina)
+void odstran(MNOZINA *mnozina, int prvok)
 {
-
+    for (int i = 0; i < mnozina->pocet_prvkov; i++)
+    {
+        if (mnozina->pole[i] == prvok)
+        {
+            for (int j = i; j < (mnozina->pocet_prvkov)-1; j++)
+            {
+                mnozina->pole[j] = mnozina->pole[j + 1];
+            }
+            break;
+        }
+    }
+    mnozina->pocet_prvkov--;
+    mnozina->pole = realloc(mnozina->pole, (mnozina->pocet_prvkov) * sizeof(int));
 }
-
 
 // HEAPSORT
 void swap(int *a, int *b)
@@ -204,6 +223,12 @@ int main()
     printf("Prienik A B: \n");
     prienik(&A, &B, &C);
     vypis(&C);
+    printf("Pridane do A: \n");
+    pridaj(&A, 5);
+    vypis((MNOZINA *)&A);
+    printf("Odstranene z A: \n");
+    odstran(&A,2);
+    vypis((MNOZINA *)&A);
 
     mnozinaDestroy(&A);
     mnozinaDestroy(&B);
