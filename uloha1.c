@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdarg.h>
 #include <stdbool.h>
-
+#define ZLYHANIE_ALOKACIE_PAMATE 2
 typedef struct
 {
     int pocet_prvkov;
@@ -16,8 +16,8 @@ int zjednotenie(MNOZINA *A, MNOZINA *B, MNOZINA *C)
     C->pocet_prvkov = A->pocet_prvkov + B->pocet_prvkov;
     C->pole = malloc(C->pocet_prvkov * sizeof(int));
     if(C->pole == NULL) {
-        fprintf(stderr, "Zlyhala alokacia pamate!");
-        return 0;
+        
+        return ZLYHANIE_ALOKACIE_PAMATE;
     }
     int i;
     for (i = 0; i < A->pocet_prvkov; i++)
@@ -38,8 +38,8 @@ int prienik(MNOZINA *A, MNOZINA *B, MNOZINA *C)
     C->pocet_prvkov = 0;
     C->pole = malloc((A->pocet_prvkov + B->pocet_prvkov) * sizeof(int));
     if(C->pole == NULL) {
-        fprintf(stderr, "Zlyhala alokacia pamate!");
-        return 0;
+       
+        return ZLYHANIE_ALOKACIE_PAMATE;
     }
     int i = 0;
     int j = 0;
@@ -81,8 +81,8 @@ int prienik(MNOZINA *A, MNOZINA *B, MNOZINA *C)
     // upraceme
     C->pole = realloc(C->pole, C->pocet_prvkov * sizeof(int));
     if(C->pole == NULL) {
-        fprintf(stderr, "Zlyhala realokacia pamate!");
-        return 1;
+    
+        return ZLYHANIE_ALOKACIE_PAMATE;
     }
     return 1;
 }
@@ -104,8 +104,8 @@ int mnozinaFactory(MNOZINA *mnozina, int count, ...)
 
     mnozina->pole = malloc(count * sizeof(int));
     if(mnozina->pole == NULL) {
-        fprintf(stderr, "Zlyhala alokacia pamate!");
-        return 0;
+        
+        return ZLYHANIE_ALOKACIE_PAMATE;
     }
     mnozina->pocet_prvkov = count;
     for (int i = 0; i < count; i++)
@@ -144,7 +144,7 @@ int pridaj(MNOZINA *mnozina, int prvok)
 {
     mnozina->pole = realloc(mnozina->pole, (mnozina->pocet_prvkov + 1) * sizeof(int));
     if(mnozina->pole == NULL) {
-        return 0;
+        return ZLYHANIE_ALOKACIE_PAMATE;
     }
     mnozina->pole[mnozina->pocet_prvkov] = prvok;
     mnozina->pocet_prvkov++;
@@ -167,7 +167,7 @@ int odstran(MNOZINA *mnozina, int prvok)
     mnozina->pocet_prvkov--;
     mnozina->pole = realloc(mnozina->pole, (mnozina->pocet_prvkov) * sizeof(int));
     if(mnozina->pole == NULL) {
-        return 0;
+        return ZLYHANIE_ALOKACIE_PAMATE;
     }
     return 1;
 }
